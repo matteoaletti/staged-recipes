@@ -1,0 +1,65 @@
+{% set version = "1.0.0" %}
+
+package:
+  name: perseo_perturbations
+  version: {{ version }}
+
+source:
+  url: https://pypi.org/packages/source/p/perseo_perturbations/perseo_perturbations-{{ version }}.tar.gz
+  sha256: a9a2488ebad7df83af8b6cc6828c1a4c7cd6893e51d9ab5e5cd128e15796d4a8
+
+build:
+  number: 0
+  script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
+
+requirements:
+  build:
+    - {{ compiler('c') }}
+    - {{ compiler('cxx') }}
+    - {{ compiler('fortran') }}
+    - {{ stdlib('c') }}  # [not win]
+    - python
+    - meson-python
+    - meson
+    - ninja
+    - numpy >2
+    - pip
+    - wheel
+  host:
+    - python
+    - numpy >2
+    - meson-python
+    - meson
+    - ninja
+    - wheel
+    - pip
+  run:
+    - python
+    - numpy >2
+    - scipy >1.13
+    - pandas >=1.4.0
+    - xarray >=2026.4.0
+    - more-itertools
+    - netcdf4
+    - pymap3d >=3.2
+    - perseo-core >=1.0.0
+
+test:
+  imports:
+    - perseo_perturbations
+    - perseo_perturbations.geodynamics.solid
+  commands:
+    - pip check
+  requires:
+    - pip
+
+about:
+  home: https://github.com/aresys-srl/perseo
+  summary: 'Python Ecosystem for Remote Sensing & Earth Observation: computing geodynamics displacements and atmospheric delays for SAR products.'
+  doc_url: https://aresys-srl.github.io/perseo
+  license: MIT
+  license_file: LICENSE.txt
+
+extra:
+  recipe-maintainers:
+    - matteoaletti
